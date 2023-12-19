@@ -329,7 +329,6 @@ import { UnwrapRef } from 'vue'
 declare module 'vue' {
   interface ComponentCustomProperties {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
-    readonly FormOptions: UnwrapRef<typeof import('./src/api/types')['FormOptions']>
     readonly FundingRoundFactoryAbi: UnwrapRef<typeof import('./src/api/abi')['FundingRoundFactoryAbi']>
     readonly MaciFactoryAbi: UnwrapRef<typeof import('./src/api/abi')['MaciFactoryAbi']>
     readonly NotConnected: UnwrapRef<typeof import('./src/api/errors')['NotConnected']>
@@ -640,7 +639,6 @@ declare module 'vue' {
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
-    readonly FormOptions: UnwrapRef<typeof import('./src/api/types')['FormOptions']>
     readonly FundingRoundFactoryAbi: UnwrapRef<typeof import('./src/api/abi')['FundingRoundFactoryAbi']>
     readonly MaciFactoryAbi: UnwrapRef<typeof import('./src/api/abi')['MaciFactoryAbi']>
     readonly NotConnected: UnwrapRef<typeof import('./src/api/errors')['NotConnected']>

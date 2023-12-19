@@ -10,7 +10,6 @@ declare module 'vue' {
     NumberInput: typeof import('./src/components/NumberInput.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    Temp: typeof import('./src/components/temp.vue')['default']
     TheInput: typeof import('./src/components/TheInput.vue')['default']
     TransactionHash: typeof import('./src/components/TransactionHash.vue')['default']
     TransactionModal: typeof import('./src/components/TransactionModal.vue')['default']
