@@ -5,7 +5,7 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite --port 3333 --open",
-    "lint": "eslint --no-warn-ignored",
+    "lint": "eslint",
     "typecheck": "vue-tsc --noEmit",
     "preview": "vite preview",
     "test": "vitest run",
@@ -52,6 +52,6 @@
     "pre-commit": "pnpm lint-staged"
   },
   "lint-staged": {
-    "*": "eslint --no-warn-ignored"
+    "*": "eslint"
   }
 }
