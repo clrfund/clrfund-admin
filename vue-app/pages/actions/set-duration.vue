@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { FormError, FormSubmitEvent } from '#ui/types'
 
-const router = useRouter()
 const app = useAppStore()
 
 const isOpen = ref(false)
@@ -13,17 +12,19 @@ const explorerUrl = computed(() => app.getExplorerUrlByHash(txHash.value))
 
 const state = reactive({
   signUpDuration: undefined,
-  votingDuration: undefined
+  votingDuration: undefined,
 })
 
-const validate = (state: any): FormError[] => {
+function validate(state: any): FormError[] {
   const errors = []
-  if (state.signUpDuration === undefined) errors.push({ path: 'signup-duration', message: 'Required' })
-  if (state.votingDuration === undefined) errors.push({ path: 'voting-duration', message: 'Required' })
+  if (state.signUpDuration === undefined)
+    errors.push({ path: 'signup-duration', message: 'Required' })
+  if (state.votingDuration === undefined)
+    errors.push({ path: 'voting-duration', message: 'Required' })
   return errors
 }
 
-async function onSubmit (event: FormSubmitEvent<any>) {
+async function onSubmit(event: FormSubmitEvent<any>) {
   isOpen.value = true
   txError.value = ''
   txHash.value = ''
@@ -31,27 +32,29 @@ async function onSubmit (event: FormSubmitEvent<any>) {
   try {
     const tx = await app.changeRoundDuration(event.data.signUpDuration, event.data.votingDuration)
     txHash.value = tx.hash
-  } catch (e) {
+  }
+  catch (e) {
     txError.value = (e as Error).message
   }
 }
-
 </script>
 
 <template>
   <UContainer>
     <UCard>
       <template #header>
-        <div class="h-6 text-center">{{ title }}</div>
+        <div class="h-6 text-center">
+          {{ title }}
+        </div>
       </template>
-        <div>
+      <div>
         <UForm :validate="validate" :state="state" class="space-y-4" @submit="onSubmit">
           <UFormGroup label="Signup duration (seconds)" name="signup-duration" required>
-            <UInput v-model="state.signUpDuration" type="number" min="1"/>
+            <UInput v-model="state.signUpDuration" type="number" min="1" />
           </UFormGroup>
 
           <UFormGroup label="Voting duration (seconds)" name="voting-duration" required>
-            <UInput v-model="state.votingDuration" type="number" min="1"/>
+            <UInput v-model="state.votingDuration" type="number" min="1" />
           </UFormGroup>
 
           <div class="flex gap-3">
@@ -65,11 +68,11 @@ async function onSubmit (event: FormSubmitEvent<any>) {
             </UButton>
           </div>
         </UForm>
-        </div>
+      </div>
     </UCard>
 
     <UModal v-model="isOpen" prevent-close>
-      <transaction-modal :title="title" :tx-error="txError" :tx-hash="txHash" :explorer-url="explorerUrl" @close="isOpen = false"/>
+      <transaction-modal :title="title" :tx-error="txError" :tx-hash="txHash" :explorer-url="explorerUrl" @close="isOpen = false" />
     </UModal>
   </UContainer>
 </template>

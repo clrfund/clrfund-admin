@@ -1,15 +1,12 @@
 <script setup lang="ts">
+defineProps<{
+  title: string
+  txHash: string
+  txError: string
+  explorerUrl: string
+}>()
 
-  const props = defineProps<{
-    title: string,
-    txHash: string,
-    txError: string,
-    explorerUrl: string
-  }>()
-
-  const emit = defineEmits(['close'])
-  const waiting = computed(() => !props.txError && !props.txHash)
-
+const emit = defineEmits(['close'])
 </script>
 
 <template>
@@ -24,10 +21,16 @@
     </template>
     <div break-all>
       <a v-if="txHash && explorerUrl" rel="noreferrer" :href="explorerUrl" target="_blank">{{ explorerUrl }}</a>
-      <div v-else-if="txHash" text-green-600>{{ txHash }}</div>
+      <div v-else-if="txHash" text-green-600>
+        {{ txHash }}
+      </div>
     </div>
     <UAlert v-if="txError" title="Error" icon="i-carbon-error" color="red" variant="soft">
-      <template #description><div class="break-word text-ellipsis overflow-hidden">{{ txError }}</div></template>
+      <template #description>
+        <div class="break-word text-ellipsis overflow-hidden">
+          {{ txError }}
+        </div>
+      </template>
     </UAlert>
   </UCard>
 </template>

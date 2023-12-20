@@ -6,10 +6,10 @@ export default defineNuxtConfig({
     '@nuxt/ui',
   ],
   colorMode: {
-    classSuffix: ''
+    classSuffix: '',
   },
   ui: {
-    icons: ['carbon']
+    icons: ['carbon'],
   },
   devtools: { enabled: true },
   runtimeConfig: {
@@ -17,7 +17,7 @@ export default defineNuxtConfig({
       // configure in .env file
       // WalletConnect project id,  NUXT_PUBLIC_WALLET_CONNECT_PROJECT_ID
       walletConnectProjectId: '',
-    }
+    },
   },
   imports: {
     // https://nuxt.com/docs/guide/concepts/auto-imports#auto-import-from-third-party-packages
@@ -25,15 +25,15 @@ export default defineNuxtConfig({
       {
         from: '@web3modal/ethers/vue',
         imports: ['createWeb3Modal', 'defaultConfig', 'useWeb3ModalAccount', 'useWeb3ModalProvider'],
-      }
-    ]
+      },
+    ],
   },
   vue: {
     compilerOptions: {
-      isCustomElement: (tag) =>
+      isCustomElement: tag =>
         ['w3m-account-button', 'w3m-connect-button'].includes(
           tag,
         ),
-    }
-  }
+    },
+  },
 })

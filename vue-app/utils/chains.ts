@@ -34,6 +34,6 @@ export const chains: Chain[] = [
     name: 'Sepolia Testnet',
     currency: 'ETH',
     explorerUrl: 'https://sepolia.etherscan.io',
-    rpcUrl: 'https://sepolia.infura.io/v3/7c338dd2f00a443c906e6f081cf11b07',
+    rpcUrl: 'https://ethereum-sepolia.publicnode.com',
   },
 ]
