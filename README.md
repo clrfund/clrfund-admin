@@ -2,8 +2,6 @@
 
 Tooling for managing [clr.fund](https://github.com/clrfund/monorepo) funding round instances. 
 
-This project was started from the [vitesse-lite](https://vitesse-lite.netlify.app) vue app template. 
-
 # Development
 
 ## Install the dependencies
@@ -25,6 +23,9 @@ pnpm dev
 pnpm test
 ```
 
+### Limitations
+
+This app is currently only for internal use and supports only a few funding round factories defined in `utils/factories.ts`. We plan to support more funding round factories in the future when we have a clr.fund registry that tracks all the clr.fund instances.
 
 ### Tech stack resources
 
@@ -33,7 +34,10 @@ pnpm test
   - [Pinia](https://pinia.vuejs.org)
   - [Ethers v6](https://docs.ethers.io/v6/)
   - [WalletConnect](https://walletconnect.com)
-  - [UnoCSS](https://github.com/unocss/unocss)
   - [Carbon Iconify](https://icon-sets.iconify.design/carbon/)
   - [Vitest](https://vitest.dev)
   - [eslint](https://eslint.org)
+  - [tailwindcss](https://tailwindcss.com)
+  - [Nuxt](https://nuxt.com)
+  - [NuxtUI](https://ui.nuxt.com)
+  - [Nuxt Color Mode](https://color-mode.nuxtjs.org)
