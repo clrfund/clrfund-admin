@@ -1,4 +1,3 @@
-import { chains } from '~/api/chains'
 const chainNames = chains.map((chain) => chain.name)
 
 export class UnsupportChainError extends Error {

@@ -1,16 +1,10 @@
 import {
-    useWeb3ModalAccount,
-    useWeb3ModalProvider,
-} from '@web3modal/ethers/vue'
-import {
     BrowserProvider,
     Contract,
     ContractTransactionResponse,
-    Eip1193Provider,
     toNumber,
 } from 'ethers'
-import { UnsupportChainError } from '~/api/errors'
-import { factories } from '~/api/factories'
+import type { Eip1193Provider } from 'ethers'
 
 export const useAppStore = defineStore('app', () => {
     const account = useWeb3ModalAccount()
@@ -27,11 +21,18 @@ export const useAppStore = defineStore('app', () => {
 
     async function loadAppData() {
         console.log('loading app data')
-        factoryOwner.value = await getFactoryOwner()
-        const durations = await getRoundDurations()
-        signUpDuration.value = durations.signUpDuration
-        votingDuration.value = durations.votingDuration
-        userRegistryOwner.value = await getUserRegistryOwner()
+        if(account.isConnected) {
+            factoryOwner.value = await getFactoryOwner()
+            const durations = await getRoundDurations()
+            signUpDuration.value = durations.signUpDuration
+            votingDuration.value = durations.votingDuration
+            userRegistryOwner.value = await getUserRegistryOwner()
+        } else {
+            factoryOwner.value = ''
+            signUpDuration.value = 0
+            votingDuration.value = 0
+            userRegistryOwner.value = ''
+        }
     }
 
     const isUserRegistryOwner = computed(() => {
@@ -171,6 +172,7 @@ export const useAppStore = defineStore('app', () => {
         const userRegistryContract = new Contract(
             userRegistryAddress,
             SimpleUserRegistryAbi,
+            signer
         )
         return userRegistryContract.owner()
     }

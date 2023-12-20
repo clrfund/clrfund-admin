@@ -1,8 +1,7 @@
-import antfu from '@antfu/eslint-config'
-
-export default antfu(
+export default [
   {
-    unocss: true,
-    formatters: true,
-  },
-)
+    rules: {
+      "prefer-const": "error"
+    }
+  }
+];
