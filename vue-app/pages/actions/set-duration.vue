@@ -32,6 +32,9 @@ async function onSubmit(event: FormSubmitEvent<any>) {
   try {
     const tx = await app.changeRoundDuration(event.data.signUpDuration, event.data.votingDuration)
     txHash.value = tx.hash
+    await tx.wait()
+    // load the new durations
+    await app.loadAppData()
   }
   catch (e) {
     txError.value = (e as Error).message
