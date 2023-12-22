@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const { isConnected } = useWeb3ModalAccount()
 const app = useAppStore()
 
 const isOpen = ref(false)
@@ -35,9 +36,10 @@ async function onSubmit() {
           Are you sure you want to start a new funding round?
         </div>
         <div class="flex justify-center gap-3">
-          <UButton type="submit" @click="onSubmit">
-            Submit
+          <UButton v-if="isConnected" type="submit" @click="onSubmit">
+              Submit
           </UButton>
+          <w3m-connect-button v-else />
           <UButton color="gray">
             <NuxtLink to="/">
               Cancel

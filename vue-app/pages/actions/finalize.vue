@@ -2,6 +2,7 @@
 import type { FormError, FormSubmitEvent } from '#ui/types'
 
 const app = useAppStore()
+const { isConnected } = useWeb3ModalAccount()
 
 const isOpen = ref(false)
 const title = 'Finalize Current Round'
@@ -58,9 +59,10 @@ async function onSubmit(event: FormSubmitEvent<any>) {
           </UFormGroup>
 
           <div class="flex gap-3">
-            <UButton type="submit">
+            <UButton v-if="isConnected" type="submit" @click="onSubmit">
               Submit
             </UButton>
+            <w3m-connect-button v-else />
             <UButton color="gray">
               <NuxtLink to="/">
                 Cancel

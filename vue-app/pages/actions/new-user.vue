@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { FormError, FormSubmitEvent } from '#ui/types'
 
+const { isConnected } = useWeb3ModalAccount()
 const app = useAppStore()
 
 const isOpen = ref(false)
@@ -50,9 +51,10 @@ async function onSubmit(event: FormSubmitEvent<any>) {
           </UFormGroup>
 
           <div class="flex gap-3">
-            <UButton type="submit">
+            <UButton v-if="isConnected" type="submit" @click="onSubmit">
               Submit
             </UButton>
+            <w3m-connect-button v-else />
             <UButton color="gray">
               <NuxtLink to="/">
                 Cancel

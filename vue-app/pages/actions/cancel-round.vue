@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const app = useAppStore()
+const { isConnected } = useWeb3ModalAccount()
 
 const isOpen = ref(false)
 const title = 'Cancel Current Round'
@@ -35,9 +36,10 @@ async function onSubmit() {
           Are you sure you want to cancel the current funding round? This operation cannot be undone.
         </div>
         <div class="flex justify-center gap-3">
-          <UButton type="submit" @click="onSubmit">
+          <UButton v-if="isConnected" type="submit" @click="onSubmit">
             Submit
           </UButton>
+          <w3m-connect-button v-else />
           <UButton color="gray">
             <NuxtLink to="/">
               Cancel
