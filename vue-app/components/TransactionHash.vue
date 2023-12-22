@@ -1,11 +1,23 @@
 <script setup lang="ts">
-defineProps<{
-  hash: string
+import { useClipboard } from '@vueuse/core'
+
+const props = defineProps<{
+  txHash: string
 }>()
+
+const app = useAppStore()
+
+const explorerUrl = computed(() => app.getExplorerUrlByHash(props.txHash))
+const { copy, copied, isSupported } = useClipboard({ source: props.txHash })
+
 </script>
 
 <template>
-  <div m-3 mt-8 text-sm>
-    {{ hash }}
-  </div>
+  <ClientOnly>
+    <div>Transaction Hash:</div>
+    <UButtonGroup orientation="horizontal"  class="dark:border-gray-600 dark:bg-gray-800 p-2">
+      <UButton class="p-2 w-11/12" :to="explorerUrl" target="_blank" rel="noreferrer" variant="link" color="gray" :label="txHash" truncate/>
+      <UButton v-if="isSupported" :icon="copied? 'i-carbon-checkmark': 'i-carbon-copy'" variant="ghost" @click="copy(props.txHash)"/>
+    </UButtonGroup>
+  </ClientOnly>
 </template>

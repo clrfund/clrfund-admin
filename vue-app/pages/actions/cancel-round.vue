@@ -6,7 +6,6 @@ const title = 'Cancel Current Round'
 
 const txHash = ref('')
 const txError = ref('')
-const explorerUrl = computed(() => app.getExplorerUrlByHash(txHash.value))
 
 async function onSubmit() {
   isOpen.value = true
@@ -49,7 +48,7 @@ async function onSubmit() {
     </UCard>
 
     <UModal v-model="isOpen" prevent-close>
-      <transaction-modal :title="title" :tx-error="txError" :tx-hash="txHash" :explorer-url="explorerUrl" @close="isOpen = false" />
+      <transaction-modal :title="title" :tx-error="txError" :tx-hash="txHash" @close="isOpen = false" />
     </UModal>
   </UContainer>
 </template>

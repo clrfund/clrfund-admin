@@ -44,10 +44,10 @@ export const useAppStore = defineStore('app', () => {
    * @returns explorer url
    */
   function getExplorerUrlByHash(hash: string): string {
-    if (!account.chainId.value || !hash)
+    if (!hash)
       return ''
 
-    const chain = chains[account.chainId.value]
+    const chain = chains.find(ch => ch.chainId === account.chainId.value)
     if (!chain)
       return ''
 
@@ -357,6 +357,6 @@ export const useAppStore = defineStore('app', () => {
     finalizeRound,
     getRoundDurations,
     changeRoundDuration,
-    getExplorerUrlByHash,
+    getExplorerUrlByHash
   }
 })

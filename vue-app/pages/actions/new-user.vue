@@ -8,7 +8,6 @@ const title = 'Add User'
 
 const txHash = ref('')
 const txError = ref('')
-const explorerUrl = computed(() => app.getExplorerUrlByHash(txHash.value))
 
 const state = reactive({
   user: undefined,
@@ -65,7 +64,7 @@ async function onSubmit(event: FormSubmitEvent<any>) {
     </UCard>
 
     <UModal v-model="isOpen" prevent-close>
-      <transaction-modal :title="title" :tx-error="txError" :tx-hash="txHash" :explorer-url="explorerUrl" @close="isOpen = false" />
+      <transaction-modal :title="title" :tx-error="txError" :tx-hash="txHash" @close="isOpen = false" />
     </UModal>
   </UContainer>
 </template>
