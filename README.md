@@ -2,26 +2,43 @@
 
 Tooling for managing [clr.fund](https://github.com/clrfund/monorepo) funding round instances. 
 
-# Development
+### Development
 
-## Install the dependencies
+#### Install the dependencies
 
 ```sh
 pnpm i
 ```
 
-## Start the admin app
+#### Start the admin app
 
 ```sh
 pnpm dev
 ```
 
 
-## Run unit tests
+#### Run unit tests
 
 ```sh
 pnpm test
 ```
+
+### Deploy to Netlify
+
+#### Set environment variables
+```sh
+NUXT_WALLET_CONNECT_PROJECT_ID=
+PNPM_FLAGS=--shamefully-hoist
+```
+
+#### Build Settings
+```
+Base directory: /
+Build command: vue-app
+Build command: pnpm --filter './vue-app' run generate
+Publish directory: vue-app/dist
+```
+
 
 ### Limitations
 
