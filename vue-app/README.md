@@ -24,7 +24,7 @@ pnpm run dev
 Build the application for production:
 
 ```bash
-pnpm run build
+pnpm run generate
 ```
 
 Locally preview production build:

@@ -10,6 +10,10 @@ Tooling for managing [clr.fund](https://github.com/clrfund/monorepo) funding rou
 pnpm i
 ```
 
+#### Setup environment variables
+
+Copy the .env.example in the `vue-app` directory to .env and update the WalletConnect project id with your own Id
+
 #### Start the admin app
 
 ```sh
@@ -27,7 +31,8 @@ pnpm test
 
 #### Set environment variables
 ```sh
-NUXT_WALLET_CONNECT_PROJECT_ID=
+# get the WalletConnect project id from https://cloud.walletconnect.com
+NUXT_PUBLIC_WALLET_CONNECT_PROJECT_ID=
 PNPM_FLAGS=--shamefully-hoist
 ```
 
