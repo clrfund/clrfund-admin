@@ -18,6 +18,20 @@ createWeb3Modal({
   chains,
   projectId,
 })
+
+const { isConnected, chainId, address } = useWeb3ModalAccount()
+const appStore = useAppStore()
+
+// call loadAppData() in the app level instead of the view or component level
+// to avoid component unmounted causing WalletConnect composables to lose reactivity
+onMounted(() => {
+  appStore.loadAppData()
+})
+
+watch([isConnected, chainId, address], () => {
+  appStore.loadAppData()
+})
+
 </script>
 
 <template>
