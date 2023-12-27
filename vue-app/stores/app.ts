@@ -348,6 +348,7 @@ export const useAppStore = defineStore('app', () => {
     factoryOwner,
     isFactoryOwner,
     isUserRegistryOwner,
+    userRegistryOwner,
     signUpDuration,
     votingDuration,
     loadAppData,
