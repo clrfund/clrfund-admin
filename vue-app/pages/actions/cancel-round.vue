@@ -49,8 +49,10 @@ async function onSubmit() {
             </NuxtLink>
           </UButton>
         </div>
-        <UAlert v-if="!factory" :ui="{ padding: 'pt-4'}" color="red" variant="soft" :title="new UnsupportChainError().message"/>
-        <UAlert v-else-if="!isFactoryOwner" :ui="{ padding: 'pt-4'}" color="red" variant="soft" title="Please connect to account" :description="factoryOwner"/>
+        <div v-if="isConnected">
+          <UAlert v-if="!factory" :ui="{ padding: 'pt-4'}" color="red" variant="soft" :title="new UnsupportChainError().message"/>
+          <UAlert v-else-if="!isFactoryOwner" :ui="{ padding: 'pt-4'}" color="red" variant="soft" title="Please connect to account" :description="factoryOwner"/>
+        </div>
       </div>
     </UCard>
 

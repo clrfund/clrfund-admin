@@ -65,8 +65,10 @@ async function onSubmit(event: FormSubmitEvent<any>) {
             </UButton>
           </div>
         </UForm>
-        <UAlert v-if="!factory" :ui="{ padding: 'pt-4'}" color="red" variant="soft" :title="new UnsupportChainError().message"/>
-        <UAlert v-else-if="!isUserRegistryOwner" :ui="{ padding: 'pt-4'}" color="red" variant="soft" title="Please connect to account" :description="userRegistryOwner"/>
+        <div v-if="isConnected">
+          <UAlert v-if="!factory" :ui="{ padding: 'pt-4'}" color="red" variant="soft" :title="new UnsupportChainError().message"/>
+          <UAlert v-else-if="!isUserRegistryOwner" :ui="{ padding: 'pt-4'}" color="red" variant="soft" title="Please connect to account" :description="userRegistryOwner"/>
+        </div>
       </div>
     </UCard>
 
