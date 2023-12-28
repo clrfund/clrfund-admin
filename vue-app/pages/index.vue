@@ -48,7 +48,7 @@ const actions = ref([
                 <div class="mt-2">
                   <div>{{ action.description }}</div>
                   <UAlert :ui="{ padding: 'py-4' }" variant="soft" color="red" v-if="!action.isEnabled" title="Please connect with account">
-                    <template #description>{{ action.owner }}</template>
+                    <template #description><div class="truncate">{{ action.owner }}</div></template>
                   </UAlert>
                 </div>
               </div>
