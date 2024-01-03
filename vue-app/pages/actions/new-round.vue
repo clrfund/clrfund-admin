@@ -1,6 +1,9 @@
 <script setup lang="ts">
 const { isConnected } = useWeb3ModalAccount()
 const app = useAppStore()
+const { factory, isFactoryOwner, factoryOwner } = storeToRefs(app)
+// disable the submit button
+const disableSubmit = computed(() => !(factory.value && isFactoryOwner.value))
 
 const isOpen = ref(false)
 const title = 'Start a New Round'
@@ -36,7 +39,7 @@ async function onSubmit() {
           Are you sure you want to start a new funding round?
         </div>
         <div class="flex justify-center gap-3">
-          <UButton v-if="isConnected" type="submit" @click="onSubmit">
+          <UButton v-if="isConnected" type="submit" @click="onSubmit" :disabled="disableSubmit">
               Submit
           </UButton>
           <w3m-connect-button v-else />
@@ -46,6 +49,10 @@ async function onSubmit() {
             </NuxtLink>
           </UButton>
         </div>
+      </div>
+      <div v-if="isConnected">
+        <UAlert v-if="!factory" :ui="{ padding: 'pt-4'}" color="red" variant="soft" :title="new UnsupportChainError().message"/>
+        <UAlert v-else-if="!isFactoryOwner" :ui="{ padding: 'pt-4'}" color="red" variant="soft" title="Please connect to account" :description="factoryOwner"/>
       </div>
     </UCard>
 

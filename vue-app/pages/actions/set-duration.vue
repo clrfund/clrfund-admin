@@ -3,6 +3,9 @@ import type { FormError, FormSubmitEvent } from '#ui/types'
 
 const { isConnected } = useWeb3ModalAccount()
 const app = useAppStore()
+const { factory, isFactoryOwner, factoryOwner } = storeToRefs(app)
+// disable the submit button
+const disableSubmit = computed(() => !(factory.value && isFactoryOwner.value))
 
 const isOpen = ref(false)
 const title = 'Change Next Round Duration'
@@ -61,7 +64,7 @@ async function onSubmit(event: FormSubmitEvent<any>) {
           </UFormGroup>
 
           <div class="flex gap-3">
-            <UButton v-if="isConnected" type="submit" @click="onSubmit">
+            <UButton v-if="isConnected" type="submit" :disabled="disableSubmit">
               Submit
             </UButton>
             <w3m-connect-button v-else />
@@ -72,6 +75,10 @@ async function onSubmit(event: FormSubmitEvent<any>) {
             </UButton>
           </div>
         </UForm>
+        <div v-if="isConnected">
+          <UAlert v-if="!factory" :ui="{ padding: 'pt-4'}" color="red" variant="soft" :title="new UnsupportChainError().message"/>
+          <UAlert v-else-if="!isFactoryOwner" :ui="{ padding: 'pt-4'}" color="red" variant="soft" title="Please connect to account" :description="factoryOwner"/>
+        </div>
       </div>
     </UCard>
 

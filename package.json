@@ -7,6 +7,7 @@
   "repository": "https://github.com/clrfund/clrfund-admin",
   "scripts": {
     "build": "pnpm -r run build",
+    "generate": "pnpm -r run generate",
     "dev": "pnpm --filter './vue-app' run dev",
     "test": "pnpm -r run test"
   },
