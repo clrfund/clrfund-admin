@@ -1,0 +1,6 @@
+query GetClrFundsByOwners($owners: [Bytes!]) {
+  clrFunds(where: { owner_in: $owners }) {
+    id
+    owner
+  }
+}

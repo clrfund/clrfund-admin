@@ -4,5 +4,7 @@ export default defineAppConfig({
     container: {
       constrained: 'max-w-lg',
     },
+    primary: 'cyan',
+    gray: 'cool'
   },
 })

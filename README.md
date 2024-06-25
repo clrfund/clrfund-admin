@@ -1,6 +1,6 @@
 # clrfund-admin
 
-Tooling for managing [clr.fund](https://github.com/clrfund/monorepo) funding round instances. 
+Tooling for managing [clr.fund](https://github.com/clrfund/monorepo) funding round instances.
 
 ### Development
 
@@ -20,7 +20,6 @@ Copy the .env.example in the `vue-app` directory to .env and update the WalletCo
 pnpm dev
 ```
 
-
 #### Run unit tests
 
 ```sh
@@ -30,13 +29,14 @@ pnpm test
 ### Deploy to Netlify
 
 #### Set environment variables
+
 ```sh
-# get the WalletConnect project id from https://cloud.walletconnect.com
-NUXT_PUBLIC_WALLET_CONNECT_PROJECT_ID=
+NUXT_PUBLIC_IPFS_GATEWAY_URL=
 PNPM_FLAGS=--shamefully-hoist
 ```
 
 #### Build Settings
+
 ```
 Base directory: /
 Build command: vue-app
@@ -44,19 +44,15 @@ Build command: pnpm --filter './vue-app' run generate
 Publish directory: vue-app/dist
 ```
 
-
-### Limitations
-
-This app is currently only for internal use and supports only a few funding round factories defined in `utils/factories.ts`. We plan to support more funding round factories in the future when we have a clr.fund registry that tracks all the clr.fund instances.
-
 ### Tech stack resources
 
 - `/vue-app`
   - [Vue 3](https://vuejs.org)
   - [Pinia](https://pinia.vuejs.org)
   - [Ethers v6](https://docs.ethers.io/v6/)
-  - [WalletConnect](https://walletconnect.com)
-  - [Carbon Iconify](https://icon-sets.iconify.design/carbon/)
+  - [Web3 Onboard](https://onboard.blocknative.com/)
+  - [Safe SDK](https://docs.safe.global/sdk/overview)
+  - [Heroicons](https://heroicons.com/)
   - [Vitest](https://vitest.dev)
   - [eslint](https://eslint.org)
   - [tailwindcss](https://tailwindcss.com)
