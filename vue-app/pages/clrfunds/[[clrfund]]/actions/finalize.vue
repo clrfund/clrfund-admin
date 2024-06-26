@@ -41,7 +41,7 @@ onMounted(async () => {
 })
 
 function validate(state: any): FormError[] {
-  const errors = []
+  const errors: FormError[] = []
   if (state.totalSpent === undefined)
     errors.push({ path: 'spent', message: 'Required' })
 

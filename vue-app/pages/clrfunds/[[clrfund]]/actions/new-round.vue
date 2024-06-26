@@ -73,7 +73,7 @@ async function deployNewRound() {
           />
         </UFormGroup>
       </UForm>
-      <div class="flex justify-center gap-4">
+      <div class="flex gap-4">
         <UButton
           v-if="isConnected"
           type="submit"

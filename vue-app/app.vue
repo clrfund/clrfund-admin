@@ -5,14 +5,14 @@
 </template>
 
 <script setup>
+const route = useRoute()
 const app = useAppStore()
 const wallet = useWalletStore()
 
-const ready = ref(false)
 const { clrfund, clrfunds } = storeToRefs(app)
-const { isConnected, account } = storeToRefs(wallet)
+const { isConnected, account, chainId } = storeToRefs(wallet)
 
-watch([isConnected, account], async () => {
+watch([isConnected, account, chainId], async () => {
   if (!isConnected.value) {
     clrfunds.value = []
     app.resetApp()
@@ -21,8 +21,6 @@ watch([isConnected, account], async () => {
 
   clrfunds.value = await app.getClrFunds()
 
-  if (!clrfunds.value.includes(clrfund.value)) {
-    app.resetApp()
-  }
+  if (!clrfunds.value.includes(clrfund.value)) app.resetApp()
 })
 </script>

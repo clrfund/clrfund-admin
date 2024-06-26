@@ -89,6 +89,7 @@ export const useAppStore = defineStore('app', () => {
   function resetApp() {
     clrfund.value = ''
     clrfundOwner.value = ''
+    matchingPool.value = ''
     userRegistry.value = ''
     userRegistryOwner.value = ''
     recipientRegistry.value = ''

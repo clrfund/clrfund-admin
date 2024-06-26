@@ -1,83 +1,32 @@
 <script setup lang="ts">
+import type { FormError } from '#ui/types'
 import type { MetaTransactionData } from '@safe-global/safe-core-sdk-types'
 import { Contract, parseEther } from 'ethers'
 import { getEventLogArg } from '@/utils/events'
 import { executeSafeTransactions } from '~/utils/safe'
+import { PubKey } from 'maci-domainobjs'
+import { EDEPLOY_OPTIONS } from '~/utils/types'
 
 const router = useRouter()
 const appStore = useAppStore()
 const wallet = useWalletStore()
 
 const { isConnected } = storeToRefs(wallet)
+const { chain } = storeToRefs(appStore)
 
 const DEFAULT_MATCHING_POOL_AMOUNT = parseEther(
   DEFAULT_FUNDING_SOURCE_APPROVAL_AMOUNT
 ).toString()
 
-const items = [
-  {
-    label: 'Deploy a Gnosis Safe to own the ClrFund instance',
-    slot: 'deploy-clrfund-safe',
-  },
-  {
-    label: 'Deploy a Gnosis Safe for the matching pool',
-    slot: 'deploy-pool-safe',
-  },
-  {
-    label: 'Deploy ClrFund',
-    slot: 'deploy-clrfund',
-  },
-  {
-    label: 'Deploy/Set recipient registry',
-    slot: 'deploy-recipient-registry',
-  },
-  {
-    label: 'Deploy/Set user registry',
-    slot: 'deploy-user-registry',
-  },
-  {
-    label: 'Initialize ClrFund',
-    slot: 'init-clrfund',
-  },
-]
-
-const enum EDEPLOY_OPTIONS {
-  DEPLOY = 1,
-  USE_EXISTING = 2,
-  SKIP = 3,
-}
-
-/** Option to deploy or use existing user or recipient registry */
-const registryOptions = [
-  {
-    id: 1,
-    name: 'Deploy new registry',
-  },
-  {
-    id: 2,
-    name: 'Use existing registry',
-  },
-]
-
-const matchingPoolOptions = [
-  {
-    id: EDEPLOY_OPTIONS.DEPLOY,
-    name: 'Deploy',
-  },
-  {
-    id: EDEPLOY_OPTIONS.USE_EXISTING,
-    name: 'Use existing',
-  },
-  {
-    id: EDEPLOY_OPTIONS.SKIP,
-    name: 'Skip',
-  },
-]
-
 const currentStep = ref(0)
+
+const depositLabel = computed(() => {
+  return chain.value?.token ? `Deposit in ${chain.value?.token}` : `Deposit`
+})
 
 const state = reactive({
   step: '',
+  clrfundOwnerOption: EDEPLOY_OPTIONS.DEPLOY,
   clrfundAddress: '',
   clrfundOwner: '',
   matchingPool: '',
@@ -87,8 +36,8 @@ const state = reactive({
   matchingPoolAmount: DEFAULT_MATCHING_POOL_AMOUNT,
   userRegistryAddress: '',
   recipientRegistryAddress: '',
-  deployUserRegistry: EDEPLOY_OPTIONS.DEPLOY,
-  deployRecipientRegistry: EDEPLOY_OPTIONS.DEPLOY,
+  userRegistryOption: EDEPLOY_OPTIONS.DEPLOY,
+  recipientRegistryOption: EDEPLOY_OPTIONS.DEPLOY,
   userRegistryType: 'simple',
   brightIdContext: '',
   brightIdVerifier: '0xdbf0b2ee9887fe11934789644096028ed3febe9c',
@@ -102,7 +51,6 @@ const state = reactive({
 })
 
 const isModalOpen = ref(false)
-const statuses = ref([])
 const txHash = ref('')
 const txError = ref('')
 const title = ref('')
@@ -297,152 +245,240 @@ async function deploy() {
   }
   title.value = ''
 }
+
+function useExisting(option: EDEPLOY_OPTIONS): Boolean {
+  return option === EDEPLOY_OPTIONS.USE_EXISTING
+}
+
+function deployNew(option: EDEPLOY_OPTIONS): Boolean {
+  return option === EDEPLOY_OPTIONS.DEPLOY
+}
+
+/**
+ * Validate the state before deploying ClrFund
+ * @param state The form state
+ * @returns The form error
+ */
+function validate(state: any): FormError[] {
+  const errors: FormError[] = []
+
+  if (useExisting(state.clrfundOwnerOption) && !state.clrfundOwner)
+    errors.push({ path: 'clrfund-safe', message: 'Required' })
+
+  if (useExisting(state.matchingPoolOption) && !state.matchingPool)
+    errors.push({ path: 'pool-safe', message: 'Required' })
+
+  if (
+    useExisting(state.recipientRegistryOption) &&
+    !state.recipientRegistryAddress
+  ) {
+    errors.push({ path: 'recipient-registry-address', message: 'Required' })
+  }
+
+  if (useExisting(state.userRegistryOption) && !state.userRegistryAddress) {
+    errors.push({ path: 'user-registry-address', message: 'Required' })
+  }
+
+  if (deployNew(state.userRegistryOption)) {
+    if (state.userRegistryType === 'brightid') {
+      if (!state.brightIdContext) {
+        errors.push({ path: 'context', message: 'Required' })
+      }
+      if (!state.brightIdVerifier) {
+        errors.push({ path: 'verifier', message: 'Required' })
+      } else if (!isValidAddress(state.brightIdVerifier)) {
+        errors.push({ path: 'verifier', message: 'Invalid address' })
+      }
+    }
+  }
+
+  if (deployNew(state.recipientRegistryOption)) {
+    if (state.recipientRegistryType === 'optimistic') {
+      if (!state.challengePeriod) {
+        errors.push({ path: 'challenge-period', message: 'Required' })
+      }
+      if (!state.deposit) {
+        errors.push({ path: 'deposit', message: 'Required' })
+      }
+    }
+  }
+
+  if (!isValidAddress(state.coordinator)) {
+    errors.push({ path: 'coordinator', message: 'Invalid format' })
+  }
+
+  if (!PubKey.isValidSerializedPubKey(state.coordinatorPubKey)) {
+    errors.push({ path: 'maci-key', message: 'Invalid format' })
+  }
+
+  if (!isValidAddress(state.token)) {
+    errors.push({ path: 'token', message: 'Invalid format' })
+  }
+
+  return errors
+}
 </script>
 
 <template>
   <AppPage>
-    <PageHeader>Create New ClrFund</PageHeader>
-    <UAccordion multiple color="gray" :items="items" variant="ghost" size="xl">
-      <template #deploy-clrfund-safe>
-        <UFormGroup
-          label="Use this Safe instead of deploying a new one"
+    <PageHeader>Create a New ClrFund</PageHeader>
+    <UForm :validate="validate" :state="state" class="form" @submit="deploy">
+      <div>
+        <FormGroup>
+          <UInputMenu
+            v-model="state.clrfundOwnerOption"
+            :options="clrfundOwnerOptions"
+            value-attribute="id"
+            option-attribute="name"
+          />
+        </FormGroup>
+        <FormGroup
+          v-if="useExisting(state.clrfundOwnerOption)"
           name="clrfund-safe"
         >
-          <UInput v-model="state.clrfundOwner" placeholder="0x12344..." />
-        </UFormGroup>
-      </template>
+          <UInput v-model="state.clrfundOwner" placeholder="Safe address" />
+        </FormGroup>
+      </div>
 
-      <template #deploy-pool-safe>
-        <UFormGroup label="Deployment options" name="pool-safe-options">
+      <div>
+        <FormGroup name="pool-safe-options">
           <UInputMenu
             v-model="state.matchingPoolOption"
             :options="matchingPoolOptions"
             value-attribute="id"
             option-attribute="name"
           />
-        </UFormGroup>
+        </FormGroup>
 
-        <UFormGroup
-          v-if="state.matchingPoolOption === EDEPLOY_OPTIONS.USE_EXISTING"
-          label="Gnosis Safe Address"
+        <FormGroup
+          v-if="useExisting(state.matchingPoolOption)"
           name="pool-safe"
         >
-          <UInput v-model="state.matchingPool" placeholder="0x12344..." />
-        </UFormGroup>
-      </template>
-
-      <template #deploy-user-registry>
-        <UFormGroup
-          label="Deploy or use existing user registry"
-          name="deploy-or-set-user-registry"
-        >
+          <UInput v-model="state.matchingPool" placeholder="Safe address" />
+        </FormGroup>
+      </div>
+      <div id="user-registry">
+        <FormGroup name="deploy-or-set-user-registry">
           <USelectMenu
-            v-model="state.deployUserRegistry"
-            :options="registryOptions"
+            v-model="state.userRegistryOption"
+            :options="userRegistryOptions"
             value-attribute="id"
             option-attribute="name"
           />
-        </UFormGroup>
+        </FormGroup>
 
-        <UFormGroup
-          v-if="state.deployUserRegistry === 1"
-          label="Select a user registry type"
-          name="user-registry-type"
-        >
-          <UInputMenu
-            v-model="state.userRegistryType"
-            :options="userRegistryTypes"
-          />
-        </UFormGroup>
-        <UFormGroup
-          v-if="state.deployUserRegistry === 2"
-          label="User registry address"
+        <UCard v-if="deployNew(state.userRegistryOption)">
+          <FormGroup label="User registry type" name="user-registry-type">
+            <UInputMenu
+              v-model="state.userRegistryType"
+              :options="userRegistryTypes"
+            />
+          </FormGroup>
+          <FormGroup
+            v-if="state.userRegistryType === 'brightid'"
+            label="BrightId context"
+            name="context"
+          >
+            <UInput v-model="state.brightIdContext" placeholder="clr.fund" />
+          </FormGroup>
+          <FormGroup
+            v-if="state.userRegistryType === 'brightid'"
+            label="BrightId verifier"
+            name="verifier"
+          >
+            <UInput v-model="state.brightIdVerifier" />
+          </FormGroup>
+        </UCard>
+
+        <FormGroup
+          v-if="useExisting(state.userRegistryOption)"
           name="user-registry-address"
         >
-          <UInput v-model="state.userRegistryAddress" placeholder="0x123..." />
-        </UFormGroup>
+          <UInput
+            v-model="state.userRegistryAddress"
+            placeholder="User registry address"
+          />
+        </FormGroup>
+      </div>
 
-        <UFormGroup
-          v-if="state.userRegistryType === 'brightid'"
-          label="BrightId context"
-          name="context"
-        >
-          <UInput v-model="state.brightIdContext" placeholder="clr.fund" />
-        </UFormGroup>
-        <UFormGroup
-          v-if="state.userRegistryType === 'brightid'"
-          label="BrightId verifier"
-          name="verifier"
-        >
-          <UInput v-model="state.brightIdVerifier" />
-        </UFormGroup>
-      </template>
-
-      <template #deploy-recipient-registry>
-        <UFormGroup
-          label="Deploy or use existing recipient registry"
-          name="deploy-or-set-recipient-registry"
-        >
+      <div>
+        <FormGroup name="deploy-or-set-recipient-registry">
           <UInputMenu
-            v-model="state.deployRecipientRegistry"
-            :options="registryOptions"
+            v-model="state.recipientRegistryOption"
+            :options="recipientRegistryOptions"
             value-attribute="id"
             option-attribute="name"
           />
-        </UFormGroup>
-
-        <template v-if="state.deployRecipientRegistry === 1">
-          <UFormGroup
-            label="Select a recipient registry type"
-            name="recipient-registry-type"
-          >
-            <UInputMenu
-              v-model="state.recipientRegistryType"
-              :options="recipientRegistryTypes"
-            />
-          </UFormGroup>
-          <template v-if="state.recipientRegistryType === 'optimistic'">
-            <UFormGroup label="Challenge period" name="challenge-period">
-              <UInput v-model="state.challengePeriod" placeholder="9999" />
-            </UFormGroup>
-            <UFormGroup label="Deposit" name="deposit">
-              <UInput v-model="state.deposit" placeholder="0.001" />
-            </UFormGroup>
-          </template>
-        </template>
-        <UFormGroup
-          v-if="state.deployRecipientRegistry === 2"
-          label="Recipient registry address"
+        </FormGroup>
+        <FormGroup
+          v-if="useExisting(state.recipientRegistryOption)"
           name="recipient-registry-address"
         >
           <UInput
             v-model="state.recipientRegistryAddress"
             placeholder="0x123..."
           />
-        </UFormGroup>
-      </template>
+        </FormGroup>
+        <UCard v-if="deployNew(state.recipientRegistryOption)">
+          <FormGroup
+            label="Recipient registry type"
+            name="recipient-registry-type"
+          >
+            <UInputMenu
+              v-model="state.recipientRegistryType"
+              :options="recipientRegistryTypes"
+            />
+          </FormGroup>
+          <template v-if="state.recipientRegistryType === 'optimistic'">
+            <FormGroup
+              label="Challenge period in seconds"
+              name="challenge-period"
+            >
+              <UInput v-model="state.challengePeriod" placeholder="9999" />
+            </FormGroup>
+            <FormGroup :label="depositLabel" name="deposit">
+              <UInput v-model="state.deposit" placeholder="0.001" />
+            </FormGroup>
+          </template>
+        </UCard>
+      </div>
 
-      <template #init-clrfund>
-        <UFormGroup label="Token address" name="token">
+      <UCard>
+        <FormGroup label="Token address" name="token" required>
           <UInput v-model="state.token" placeholder="0x1234" />
-        </UFormGroup>
-        <UFormGroup label="Coordinator address" name="coordinator">
+        </FormGroup>
+        <FormGroup label="Coordinator address" name="coordinator" required>
           <UInput v-model="state.coordinator" placeholder="0x1234" />
+        </FormGroup>
+        <UFormGroup
+          label="Coordinator MACI public key"
+          name="maci-key"
+          required
+        >
+          <template #hint>
+            <UTooltip text="Generate the key from the 'MACI key' page">
+              <UIcon name="i-heroicons-information-circle" />
+            </UTooltip>
+          </template>
+          <template #default>
+            <UInput
+              v-model="state.coordinatorPubKey"
+              placeholder="macipk.12344..."
+            />
+          </template>
         </UFormGroup>
-        <UFormGroup label="Coordinator MACI public key" name="maci-key">
-          <UInput
-            v-model="state.coordinatorPubKey"
-            placeholder="macipk.12344..."
-          />
-        </UFormGroup>
-        <UFormGroup label="Matching pool approval amount" name="pool-amount">
+        <FormGroup
+          label="Matching pool approval amount"
+          name="pool-amount"
+          required
+        >
           <UInput v-model="state.matchingPoolAmount" />
-        </UFormGroup>
-      </template>
-    </UAccordion>
+        </FormGroup>
+      </UCard>
 
-    <WalletWidget v-if="!isConnected" />
-    <UButton v-else @click.prevent="deploy">deploy</UButton>
+      <UButton v-if="isConnected" type="submit">Deploy</UButton>
+      <wallet-widget v-else />
+    </UForm>
 
     <UModal v-model="isModalOpen" prevent-close>
       <transaction-modal
@@ -454,3 +490,9 @@ async function deploy() {
     </UModal>
   </AppPage>
 </template>
+
+<style scoped lang="scss">
+.form {
+  width: 100%;
+}
+</style>

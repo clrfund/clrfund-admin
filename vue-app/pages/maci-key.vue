@@ -30,6 +30,11 @@ function onSubmit() {
   <ClientOnly>
     <AppPage>
       <PageHeader>MACI key</PageHeader>
+      <UAlert
+        v-if="maciPrivateKey"
+        description="Make sure to save a copy of the private key if you use it as you will
+        need it for tallying votes"
+      />
 
       <div class="w-full">
         <div>

@@ -32,14 +32,6 @@ function validate(state: any): FormError[] {
   if (!state.fundingSource)
     errors.push({ path: 'funder-address', message: 'Required' })
 
-  if (!state.fundingAmount) errors.push({ path: 'amount', message: 'Required' })
-
-  try {
-    formatUnits(state.fundingAmount)
-  } catch (e) {
-    errors.push({ path: 'amount', message: 'Invalid amount' })
-  }
-
   return errors
 }
 
@@ -51,18 +43,6 @@ async function addFundingSource() {
   try {
     title.value = 'Add Funding Source'
     const tx = await app.addFundingSource(state.fundingSource)
-    txHash.value = tx.hash
-  } catch (e) {
-    txError.value = (e as Error).message
-  }
-
-  try {
-    title.value = 'Approve Funding Source'
-    txError.value = ''
-    const tx = await app.approveFundingSource(
-      state.fundingSource,
-      state.fundingAmount
-    )
     txHash.value = tx.hash
   } catch (e) {
     txError.value = (e as Error).message
@@ -82,9 +62,6 @@ async function addFundingSource() {
       >
         <UFormGroup label="Funder Address" name="funder-address" required>
           <UInput v-model="state.fundingSource" placeholder="0x123..." />
-        </UFormGroup>
-        <UFormGroup label="Funding amount" name="amount" required>
-          <UInput v-model="state.fundingAmount" />
         </UFormGroup>
         <div class="flex gap-3">
           <UButton v-if="isConnected" type="submit" :disabled="disableSubmit">

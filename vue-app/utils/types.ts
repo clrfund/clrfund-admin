@@ -27,3 +27,12 @@ export interface FinalizeParams {
   resultCommitment: string
   perVOSpentVoiceCreditsHash: string
 }
+
+/**
+ * ClrFund deployment options
+ */
+export enum EDEPLOY_OPTIONS {
+  DEPLOY = 1,
+  USE_EXISTING = 2,
+  SKIP = 3,
+}
