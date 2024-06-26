@@ -11,7 +11,7 @@ export default defineNuxtConfig({
   ssr: false,
   runtimeConfig: {
     public: {
-      // IPFS gateway url, NUXT_PUBLIC_IPFS_GATEWAY_URL
+      // IPFS gateway url, set environment variable NUXT_PUBLIC_IPFS_GATEWAY_URL
       ipfsGatewayUrl: '',
     },
   },
