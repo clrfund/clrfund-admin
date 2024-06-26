@@ -8,6 +8,7 @@ export default defineNuxtConfig({
   },
   css: ['~/assets/css/main.css'],
   devtools: { enabled: false },
+  ssr: false,
   runtimeConfig: {
     public: {
       // IPFS gateway url, NUXT_PUBLIC_IPFS_GATEWAY_URL

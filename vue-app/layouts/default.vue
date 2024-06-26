@@ -13,7 +13,7 @@ const { showMobileMenu } = storeToRefs(appStore)
     </header>
     <main class="min-h-[calc(100vh-var(--header-height))]">
       <MobileMenu v-if="showMobileMenu" />
-      <div class="mx-auto px-4 sm:px-6 lg:px-4 max-w-7xl">
+      <div class="mx-auto px-4 sm:px-6 lg:px-4">
         <div class="flex flex-col lg:grid lg:grid-cols-10 lg:gap-6">
           <div class="lg:col-span-2">
             <aside

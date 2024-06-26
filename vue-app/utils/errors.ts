@@ -29,3 +29,15 @@ export class InvalidMACIPubKey extends Error {
     super('Invalid MACI public key')
   }
 }
+
+export class NoClrFundOwner extends Error {
+  constructor() {
+    super('Missing ClrFund owner')
+  }
+}
+
+export class NoClrFund extends Error {
+  constructor() {
+    super('Missing ClrFund')
+  }
+}

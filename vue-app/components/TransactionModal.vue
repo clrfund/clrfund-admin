@@ -30,8 +30,12 @@ const emit = defineEmits(['close'])
     </template>
     <div class="h-full g">
       <div v-if="!txHash && !txError">
-        Please sign the transaction in your wallet and wait for the transaction
-        to complete...
+        <UAlert>
+          <template #description>
+            Please sign the transaction in your wallet and wait for the
+            transaction to complete...
+          </template>
+        </UAlert>
       </div>
       <TransactionHash v-if="txHash" :tx-hash="txHash"></TransactionHash>
       <UAlert

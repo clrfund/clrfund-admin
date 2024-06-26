@@ -2,6 +2,9 @@ export const ZERO_VALUE = '0x00'
 export const DEFAULT_BASE_DEPOSIT = '0.001'
 export const DEFAULT_CHALLENGE_PERIOD = 9007199254740990
 export const DEFAULT_FUNDING_SOURCE_APPROVAL_AMOUNT = '99999'
+// used when deploying the brightID user registry to avoid contract throwing for invalid sponsor address
+export const DUMMY_BRIGHTID_SPONSOR_ADDRESS =
+  '0x594ba5B338493342b194A750A69c4a9cF7f42848'
 
 /** Deployment options */
 export const recipientRegistryOptions = [

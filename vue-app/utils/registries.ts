@@ -1,4 +1,4 @@
-import { ZeroAddress, parseEther } from 'ethers'
+import { ZeroAddress, parseEther, encodeBytes32String } from 'ethers'
 import { EContracts } from './types'
 
 export const userRegistries: Record<string, EContracts> = {
@@ -16,7 +16,7 @@ export const userRegistryTypes = Object.keys(userRegistries)
 export const recipientRegistryTypes = Object.keys(recipientRegistries)
 
 /**
- * Get get arguments to deploy a user registry contract
+ * Get arguments to deploy a user registry contract
  */
 export function getUserRegistryArgs(state: {
   userRegistryType: string
@@ -27,16 +27,16 @@ export function getUserRegistryArgs(state: {
   if (userRegistry === EContracts.BrightIdUserRegistry) {
     const context = state.brightIdContext
     const verifier = state.brightIdVerifier
-    // sponsor is not used in BrightId now
-    const sponsor = ZeroAddress
-    return [context, verifier, sponsor]
+    // sponsor is not used in BrightId but need a valid address
+    const sponsor = DUMMY_BRIGHTID_SPONSOR_ADDRESS
+    return [encodeBytes32String(context), verifier, sponsor]
   }
 
   return []
 }
 
 /**
- * Get get arguments to deploy a recipient registry contract
+ * Get arguments to deploy a recipient registry contract
  */
 export function getRecipientRegistryArgs(state: {
   recipientRegistryType: string
