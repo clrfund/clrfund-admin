@@ -1,0 +1,268 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "ClrFundDeployer",
+  "sourceName": "contracts/ClrFundDeployer.sol",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_clrfundTemplate",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_maciFactory",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_roundFactory",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [],
+      "name": "ClrFundAlreadyRegistered",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InvalidClrFundTemplate",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InvalidFundingRoundFactory",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InvalidMaciFactory",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnableInvalidOwner",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "OwnableUnauthorizedAccount",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "newTemplate",
+          "type": "address"
+        }
+      ],
+      "name": "NewClrfundTemplate",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "newTemplate",
+          "type": "address"
+        }
+      ],
+      "name": "NewFundingRoundTemplate",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "clrfund",
+          "type": "address"
+        }
+      ],
+      "name": "NewInstance",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "clrfund",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "metadata",
+          "type": "string"
+        }
+      ],
+      "name": "Register",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "clrfundTemplate",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "clrfunds",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "deployClrFund",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "maciFactory",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "roundFactory",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_clrfundTemplate",
+          "type": "address"
+        }
+      ],
+      "name": "setClrFundTemplate",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x608060405234801561001057600080fd5b5060405161066538038061066583398101604081905261002f91610182565b338061005557604051631e4fbdf760e01b81526000600482015260240160405180910390fd5b61005e81610116565b506001600160a01b03831661008657604051639ef5bcb560e01b815260040160405180910390fd5b6001600160a01b0382166100ad57604051631d20aa8560e31b815260040160405180910390fd5b6001600160a01b0381166100d457604051637b85584560e01b815260040160405180910390fd5b600180546001600160a01b039485166001600160a01b0319918216179091556002805493851693821693909317909255600380549190931691161790556101c5565b600080546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b80516001600160a01b038116811461017d57600080fd5b919050565b60008060006060848603121561019757600080fd5b6101a084610166565b92506101ae60208501610166565b91506101bc60408501610166565b90509250925092565b610491806101d46000396000f3fe608060405234801561001057600080fd5b50600436106100935760003560e01c8063715018a611610066578063715018a614610118578063792e17a6146101205780638da5cb5b14610133578063b5574d6a14610144578063f2fde38b1461015757600080fd5b8063030a0f6a1461009857806317244ffd146100ad57806319985fe6146100e55780635485868a14610105575b600080fd5b6100ab6100a636600461042b565b61016a565b005b6100d06100bb36600461042b565b60046020526000908152604090205460ff1681565b60405190151581526020015b60405180910390f35b6100ed6101ed565b6040516001600160a01b0390911681526020016100dc565b6003546100ed906001600160a01b031681565b6100ab610305565b6002546100ed906001600160a01b031681565b6000546001600160a01b03166100ed565b6001546100ed906001600160a01b031681565b6100ab61016536600461042b565b610319565b61017261035c565b6001600160a01b03811661019957604051639ef5bcb560e01b815260040160405180910390fd5b600180546001600160a01b0319166001600160a01b0383169081179091556040519081527f611164990972f1e33dd0b5348b5b3a2359c44b54ee9eb4b564f8b668a34994e19060200160405180910390a150565b6001546000908190610207906001600160a01b0316610389565b60025460035460405163784d200b60e11b81526001600160a01b039283166004820152908216602482015291925082169063f09a401690604401600060405180830381600087803b15801561025b57600080fd5b505af115801561026f573d6000803e3d6000fd5b505060405163f2fde38b60e01b81523360048201526001600160a01b038416925063f2fde38b9150602401600060405180830381600087803b1580156102b457600080fd5b505af11580156102c8573d6000803e3d6000fd5b50506040516001600160a01b03841692507f39a773f10839d86923d91d5ce7d6642f2f63a95d850495abb1f162e38aa04ea59150600090a2919050565b61030d61035c565b61031760006103db565b565b61032161035c565b6001600160a01b03811661035057604051631e4fbdf760e01b8152600060048201526024015b60405180910390fd5b610359816103db565b50565b6000546001600160a01b031633146103175760405163118cdaa760e01b8152336004820152602401610347565b6000808260601b9050604051733d602d80600a3d3981f3363d3d373d3d3d363d7360601b81528160148201526e5af43d82803e903d91602b57fd5bf360881b60288201526037816000f0949350505050565b600080546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b60006020828403121561043d57600080fd5b81356001600160a01b038116811461045457600080fd5b939250505056fea26469706673582212205cf7c8aa120c6afe6e53125baee8a3477031f9414905f19de2d309a15a7a6f9264736f6c63430008140033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100935760003560e01c8063715018a611610066578063715018a614610118578063792e17a6146101205780638da5cb5b14610133578063b5574d6a14610144578063f2fde38b1461015757600080fd5b8063030a0f6a1461009857806317244ffd146100ad57806319985fe6146100e55780635485868a14610105575b600080fd5b6100ab6100a636600461042b565b61016a565b005b6100d06100bb36600461042b565b60046020526000908152604090205460ff1681565b60405190151581526020015b60405180910390f35b6100ed6101ed565b6040516001600160a01b0390911681526020016100dc565b6003546100ed906001600160a01b031681565b6100ab610305565b6002546100ed906001600160a01b031681565b6000546001600160a01b03166100ed565b6001546100ed906001600160a01b031681565b6100ab61016536600461042b565b610319565b61017261035c565b6001600160a01b03811661019957604051639ef5bcb560e01b815260040160405180910390fd5b600180546001600160a01b0319166001600160a01b0383169081179091556040519081527f611164990972f1e33dd0b5348b5b3a2359c44b54ee9eb4b564f8b668a34994e19060200160405180910390a150565b6001546000908190610207906001600160a01b0316610389565b60025460035460405163784d200b60e11b81526001600160a01b039283166004820152908216602482015291925082169063f09a401690604401600060405180830381600087803b15801561025b57600080fd5b505af115801561026f573d6000803e3d6000fd5b505060405163f2fde38b60e01b81523360048201526001600160a01b038416925063f2fde38b9150602401600060405180830381600087803b1580156102b457600080fd5b505af11580156102c8573d6000803e3d6000fd5b50506040516001600160a01b03841692507f39a773f10839d86923d91d5ce7d6642f2f63a95d850495abb1f162e38aa04ea59150600090a2919050565b61030d61035c565b61031760006103db565b565b61032161035c565b6001600160a01b03811661035057604051631e4fbdf760e01b8152600060048201526024015b60405180910390fd5b610359816103db565b50565b6000546001600160a01b031633146103175760405163118cdaa760e01b8152336004820152602401610347565b6000808260601b9050604051733d602d80600a3d3981f3363d3d373d3d3d363d7360601b81528160148201526e5af43d82803e903d91602b57fd5bf360881b60288201526037816000f0949350505050565b600080546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b60006020828403121561043d57600080fd5b81356001600160a01b038116811461045457600080fd5b939250505056fea26469706673582212205cf7c8aa120c6afe6e53125baee8a3477031f9414905f19de2d309a15a7a6f9264736f6c63430008140033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

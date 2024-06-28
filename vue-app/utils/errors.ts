@@ -1,4 +1,4 @@
-const chainNames = chains.map(chain => chain.name)
+const chainNames = Object.values(chains).map((chain) => chain.name)
 
 export class UnsupportChainError extends Error {
   constructor() {
@@ -8,12 +8,36 @@ export class UnsupportChainError extends Error {
 
 export class NotOwnerError extends Error {
   constructor() {
-    super('Please connect with the funding round factory owner account')
+    super('Please connect with the clrfund owner account')
   }
 }
 
 export class NotConnected extends Error {
   constructor() {
     super('Please connect your wallet')
+  }
+}
+
+export class InvalidAddress extends Error {
+  constructor() {
+    super('Please use a valid address')
+  }
+}
+
+export class InvalidMACIPubKey extends Error {
+  constructor() {
+    super('Invalid MACI public key')
+  }
+}
+
+export class NoClrFundOwner extends Error {
+  constructor() {
+    super('Missing ClrFund owner')
+  }
+}
+
+export class NoClrFund extends Error {
+  constructor() {
+    super('Missing ClrFund')
   }
 }

@@ -1,39 +1,37 @@
+// polyfill for node crypto functions used in maci-domainobjs
+// https://nuxt.com/blog/v3-10#client-side-nodejs-support mentioned in
+// https://github.com/nuxt/nuxt/issues/25700
+import { env, nodeless } from 'unenv'
+const { alias } = env(nodeless, {})
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: [
-    '@pinia/nuxt',
-    '@nuxtjs/color-mode',
-    '@nuxt/ui',
-  ],
+  modules: ['@pinia/nuxt', '@nuxtjs/color-mode', '@nuxt/ui', '@nuxt/eslint'],
   colorMode: {
     classSuffix: '',
   },
-  ui: {
-    icons: ['carbon'],
-  },
-  devtools: { enabled: true },
+  css: ['~/assets/css/main.css'],
+  devtools: { enabled: false },
+  ssr: false,
   runtimeConfig: {
     public: {
-      // configure in .env file
-      // WalletConnect project id,  NUXT_PUBLIC_WALLET_CONNECT_PROJECT_ID
-      walletConnectProjectId: '',
+      // IPFS gateway url, set environment variable NUXT_PUBLIC_IPFS_GATEWAY_URL
+      ipfsGatewayUrl: '',
     },
   },
-  imports: {
-    // https://nuxt.com/docs/guide/concepts/auto-imports#auto-import-from-third-party-packages
-    presets: [
-      {
-        from: '@web3modal/ethers/vue',
-        imports: ['createWeb3Modal', 'defaultConfig', 'useWeb3ModalAccount', 'useWeb3ModalProvider'],
+  vite: {
+    define: {
+      global: 'globalThis',
+    },
+    resolve: {
+      alias: {
+        'node:buffer': alias['node:buffer'],
+        crypto: alias['crypto'],
+        stream: alias['stream'],
+        http: alias['http'],
+        https: alias['https'],
+        zlib: alias['zlib'],
       },
-    ],
-  },
-  vue: {
-    compilerOptions: {
-      isCustomElement: tag =>
-        ['w3m-account-button', 'w3m-connect-button'].includes(
-          tag,
-        ),
     },
   },
 })
