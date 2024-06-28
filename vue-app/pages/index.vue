@@ -5,13 +5,25 @@ const wallet = useWalletStore()
 const { isConnected, account, chainId } = storeToRefs(wallet)
 
 const app = useAppStore()
-const { clrfund, clrfunds } = storeToRefs(app)
+const { clrfunds, clrfund } = storeToRefs(app)
 
 const loading = ref(true)
 
 function onCreateClrFund() {
   router.push('/new-clrfund')
 }
+
+watch([isConnected, account, chainId], async () => {
+  if (!isConnected.value) {
+    clrfund.value = ''
+    clrfunds.value = []
+    return
+  }
+
+  loading.value = true
+  clrfunds.value = await app.getClrFunds()
+  loading.value = false
+})
 
 onMounted(async () => {
   clrfunds.value = await app.getClrFunds()
