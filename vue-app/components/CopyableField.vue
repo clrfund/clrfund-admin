@@ -14,7 +14,7 @@ defineProps<{
     <UButton
       v-if="externalLink"
       truncate
-      class="max-w-[calc(100%-w-5)]"
+      class="max-w-[calc(100% - w-5)]"
       color="gray"
       variant="link"
       :label="value"
@@ -25,7 +25,7 @@ defineProps<{
     <UButton
       v-else
       truncate
-      class="max-w-[calc(100%-w-5)]"
+      class="max-w-[calc(100% - w-5)]"
       disabled
       variant="ghost"
       color="gray"

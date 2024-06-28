@@ -1,4 +1,8 @@
-import { nodePolyfills } from 'vite-plugin-node-polyfills'
+// polyfill for node crypto functions used in maci-domainobjs
+// https://nuxt.com/blog/v3-10#client-side-nodejs-support mentioned in
+// https://github.com/nuxt/nuxt/issues/25700
+import { env, nodeless } from 'unenv'
+const { alias } = env(nodeless, {})
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -16,6 +20,18 @@ export default defineNuxtConfig({
     },
   },
   vite: {
-    plugins: [nodePolyfills()],
+    define: {
+      global: 'globalThis',
+    },
+    resolve: {
+      alias: {
+        'node:buffer': alias['node:buffer'],
+        crypto: alias['crypto'],
+        stream: alias['stream'],
+        http: alias['http'],
+        https: alias['https'],
+        zlib: alias['zlib'],
+      },
+    },
   },
 })
