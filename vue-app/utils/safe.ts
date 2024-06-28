@@ -140,7 +140,6 @@ export async function getSafesByOwner(
   const safeApiKit = await getSafeApiKit(BigInt(chainId))
   try {
     const checksumAddress = getAddress(owner)
-    console.log('checksumAddress', checksumAddress)
     const result = await safeApiKit.getSafesByOwner(checksumAddress)
     return result.safes
   } catch {

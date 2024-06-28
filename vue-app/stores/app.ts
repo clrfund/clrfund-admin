@@ -343,12 +343,10 @@ export const useAppStore = defineStore('app', () => {
     if (!chain.value) return []
 
     // get a list of safes owned by the connected account
-    console.log('getting clrfunds....')
     const safes = await getSafesByOwner(account.value, chain.value.id)
     const owners = [account.value, ...safes]
 
     const clrfunds = await getClrfundsByOwners(owners, chain.value.subgraphUrl)
-    console.log('clrfunds', clrfunds)
     return clrfunds
   }
 

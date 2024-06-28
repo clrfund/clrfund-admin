@@ -26,9 +26,7 @@ const state = reactive({
 
 onMounted(async () => {
   try {
-    console.log('testing onMounted finalize 2')
     const tallyResults = await app.getTallyResults()
-    console.log('after onmonted', tallyResults)
     state.totalSpent = tallyResults.totalSpent
     state.totalSpentSalt = tallyResults.totalSpentSalt
     state.resultCommitment = tallyResults.resultCommitment
