@@ -89,10 +89,11 @@ onMounted(async () => {
 
   try {
     await app.loadAppData()
-    loading.value = false
-  } catch {
-    router.push('/')
+  } catch (e) {
+    console.log('error loading app data', (e as Error).message)
   }
+
+  loading.value = false
 })
 
 watch([isConnected], () => {

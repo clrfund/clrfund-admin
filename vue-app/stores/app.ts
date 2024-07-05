@@ -77,9 +77,19 @@ export const useAppStore = defineStore('app', () => {
         .catch(() => '')
       nativeToken.value = await contract.nativeToken().catch(() => '')
       coordinator.value = await contract.coordinator().catch(() => '')
-      const rawPubKey = await contract.coordinatorPubKey().catch(() => '')
-      const pubKey = new PubKey([BigInt(rawPubKey.x), BigInt(rawPubKey.y)])
-      coordinatorPubKey.value = pubKey.serialize()
+
+      try {
+        const rawPubKey = await contract.coordinatorPubKey()
+        if (rawPubKey.x === 0n && rawPubKey.y === 0n) {
+          coordinatorPubKey.value = ''
+        } else {
+          const pubKey = new PubKey([BigInt(rawPubKey.x), BigInt(rawPubKey.y)])
+          coordinatorPubKey.value = pubKey.serialize()
+        }
+      } catch (e) {
+        console.log('Error getting MACI key', (e as Error).message)
+        coordinatorPubKey.value = ''
+      }
     }
   }
 
